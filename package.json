@@ -2,7 +2,7 @@
   "name": "pdo-tools",
   "description": "Build assets of library for creating fast snippets for MODX Revolution",
   "devDependencies": {
-    "grunt": "^1.0.1",
+    "grunt": "^1.6.3",
     "grunt-banner": "^0.6.0",
     "grunt-contrib-cssmin": "^5.0.0",
     "grunt-contrib-uglify": "^2.0.0",
