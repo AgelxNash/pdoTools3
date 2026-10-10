@@ -1071,7 +1071,7 @@ class CoreTools
             return $rows;
         }
         $total = !empty($this->config['totalVar'])
-            ? $this->modx->getPlaceholder($this->config['totalVar'])
+            ? (int)$this->modx->getPlaceholder($this->config['totalVar'])
             : 0;
 
         foreach ($rows as $key => $row) {

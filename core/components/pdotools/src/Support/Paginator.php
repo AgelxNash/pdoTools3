@@ -333,14 +333,14 @@ class Paginator
             $left = $tmp;                        // Pages from left
             $right = $pageLimit - $left - 1;    // Pages from right
 
-            if ($page - 1 == 0) {
+            if ($page - 1 === 0) {
                 $right += $left;
                 $left = 0;
             } elseif ($page - 1 < $left) {
                 $tmp = $left - ($page - 1);
                 $left -= $tmp;
                 $right += $tmp;
-            } elseif ($pages - $page == 0) {
+            } elseif ($pages - $page === 0) {
                 $left += $right;
                 $right = 0;
             } elseif ($pages - $page < $right) {
@@ -406,14 +406,14 @@ class Paginator
         if ($page <= $left) {
             $i = $left + 1;
             while ($i <= $center + $left) {
-                $skip = $i == $center + $left && !empty($this->pdoTools->config('tplPageSkip'));
+                $skip = $i === $center + $left && !empty($this->pdoTools->config('tplPageSkip'));
                 $pagination[$i] = $this->renderPageItem($url, $i, $page, $pages, $skip);
                 $i++;
             }
         } elseif ($page > $pages - $right) {
             $i = $pages - $right - $center + 1;
             while ($i <= $pages - $right) {
-                $skip = $i == $pages - $right - $center + 1 && !empty($this->pdoTools->config('tplPageSkip'));
+                $skip = $i === $pages - $right - $center + 1 && !empty($this->pdoTools->config('tplPageSkip'));
                 $pagination[$i] = $this->renderPageItem($url, $i, $page, $pages, $skip);
                 $i++;
             }
@@ -425,7 +425,7 @@ class Paginator
                     $i++;
                 }
                 if (!empty($this->pdoTools->config('tplPageSkip'))) {
-                    $key = ($page + 1 == $left + $center)
+                    $key = ($page + 1 === $left + $center)
                         ? $pages - $right + 1
                         : $left + $center;
                     $pagination[$key] = $this->renderPageSkip($pages);
@@ -437,7 +437,7 @@ class Paginator
                     $i++;
                 }
                 if (!empty($this->pdoTools->config('tplPageSkip'))) {
-                    $key = ($page - 1 == $pages - $right - $center + 1)
+                    $key = ($page - 1 === $pages - $right - $center + 1)
                         ? $left
                         : $pages - $right - $center + 1;
                     $pagination[$key] = $this->renderPageSkip($pages);
