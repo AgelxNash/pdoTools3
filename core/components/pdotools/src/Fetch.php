@@ -250,7 +250,14 @@ class Fetch extends CoreTools
         if ($this->config['setTotal'] && !in_array($this->config['return'], ['sql', 'ids'])) {
             $time = microtime(true);
 
-            $q = $this->modx->prepare("SELECT FOUND_ROWS();");
+            // MySQL 8.4 removed SQL_CALC_FOUND_ROWS: count the same SELECT wrapped
+            // as a derived table. The trailing LIMIT/OFFSET is stripped so the count
+            // matches the unlimited result set; GROUP BY / HAVING / DISTINCT semantics
+            // stay identical to the previous FOUND_ROWS() behaviour.
+            $sql = $this->query->toSQL();
+            $withoutLimit = preg_replace('/\s+LIMIT\s+\d+(?:\s*,\s*\d+)?(?:\s+OFFSET\s+\d+)?\s*$/i', '', $sql);
+
+            $q = $this->modx->prepare('SELECT COUNT(*) FROM (' . ($withoutLimit ?? $sql) . ') AS `_pdo_total`');
 
             $tstart = microtime(true);
             $q->execute();
@@ -357,10 +364,6 @@ class Fetch extends CoreTools
                     } else {
                         $fields = $this->modx->getSelectColumns($class, $alias, '', array_map('trim', explode(',', $fields)));
                     }
-                }
-
-                if ($i == 0 && $this->config['setTotal']) {
-                    $fields = 'SQL_CALC_FOUND_ROWS ' . $fields;
                 }
 
                 if (is_string($fields) && strpos($fields, '(') !== false) {
